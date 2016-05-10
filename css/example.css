@@ -1,0 +1,290 @@
+body{
+        font-family:Arial,Helvetica,Tahoma,Verdana,sans-serif;
+        font-size:14px;
+        color:#555;
+	width:960px;
+	margin:0 auto;
+	min-height:600px;
+	border:none;/*2px solid #ccc;*/
+}
+
+a {
+    color:#4B5676;
+    text-decoration:none;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+a:active{
+    text-decoration:underline;
+}
+
+#header{
+    height:100px;
+    border-bottom:1px solid #B0B0B0;
+    background:#F8F8F8 ;
+}
+
+
+#centered_links{
+    text-align:center;
+    position:relative;
+    width:100%;
+}
+
+
+#centered_links ul{
+    list-style:none;
+    border:none;
+    padding:0;
+    margin:0;
+}
+
+
+#centered_links li{
+    border-bottom:2px solid white;
+    margin-bottom:0px;
+    border-left:1px solid white;
+}
+
+
+#centered_links li a{
+    display: block;
+    padding: 5px 5px 5px 0.5em;
+    background-color: #F8F8F8  ;
+    color: #686868 ;
+    text-decoration: none;
+    width: 100%;
+}
+
+
+html>body #centered_links li a {
+    width: auto;
+}
+
+
+#centered_links li a:hover{
+    background-color: #f0f0f0 ;
+    color: gray ;
+}
+
+
+#logocontainer{
+    width:100%;
+    height:50%;
+}
+
+
+#logocontainer img{
+    width:330px;
+    height:44px;
+    padding-left:16px;
+    padding-top:15px;
+}
+
+
+
+#pager_index_right1{
+    float:right; 
+    height:210px;
+    width:760px;
+    padding:0px;
+    background:none;
+    border-top:0;
+}
+
+
+#pager_index_right1_leftside{
+    float:left;
+    width:500px;
+    height:210px;
+    border-right:0;
+}
+
+
+#pager_index_right1_rightside{
+    float:right;
+    width:260px;
+    height:210px;
+}
+
+
+#pager_index_right2{
+    float:right; 
+    height:137px;
+    width:760px;
+    padding:5px 0px 5px 0px;
+    background:none;
+    border-top:0;
+    border-bottom:0;
+    text-align:justify;
+    font-size:100%;
+    
+}
+
+
+#pager_index_right3{
+    float:right; 
+    height:145px;
+    width:760px;
+    padding:0px;
+    background:none;
+    border-bottom:0;
+    
+}
+
+
+#pager_index_right3_box{
+    float:left;
+    width:189px;
+    height:145px;
+    background:none;
+    padding:0px;
+    border-right:0;
+    text-align:center;
+}
+
+a.pager_index_right3_box:link{}
+a.pager_index_right3_box:visited{}
+a.pager_index_right3_box:hover{text-decoration:none;color:blue;}
+
+#pagerleft{
+    float:left;
+    height:500px;
+    padding:0px;
+    margin:0;
+    width:161px;
+    background:#F8F8F8  ;
+    
+}
+
+
+#pagerleft_top{
+    height:368px;
+    border-bottom:2px solid white;
+    width:100%;
+    padding-bottom:15px;
+    text-align:left;
+    font-size:90%;
+}
+
+
+#pagerleft_top ul{
+    list-style:none;
+    border:none;
+    padding:0;
+    margin:0;
+}
+
+
+#pagerleft_top li{
+    border-bottom:2px solid white;
+   /* padding:5px 0px 5px 0px;*/
+    margin-bottom:0px;
+    /*background:#F2F2F2;*/
+}
+
+
+#pagerleft_top li a{
+    display: block;
+    padding: 5px 5px 5px 0.5em;
+    border-left: 10px solid #C8C8C8  ;
+    border-right: 10px solid  #F0F0F0   ;
+    background-color: #E0E0E0  ;
+    color: #686868 ;
+    text-decoration: none;
+    width: 100%;
+}
+
+html>body #pagerleft_top li a {
+    width: auto;
+}
+
+
+#pagerleft_top li a:hover {
+    border-left: 10px solid #B8B8B8 ;
+    border-right: 10px solid #E0E0E0  ;
+    background-color: #D0D0D0 ;
+    color: #fff ;
+}
+
+
+#pagerleft_bottom{
+    font-size:80%;
+    text-align:center;
+    height:100px;
+    width:161px;
+    padding:15px 0px 0px 0px;
+    background:#F2F2F2;
+    bottom:0px;
+}
+
+
+#pager_F_P_C_main{
+    float:left;
+    position:relative;
+    top:40px;
+    height:460px;
+    padding-left:45px;
+    width:355px;
+    border-right:0px solid black;
+    background:none; /*picture*/
+}
+
+
+#pager_F_P_C_adv{
+    float:right;
+    position:relative;
+    height:500px;
+    width:200px;
+    padding:0px 30px 0px 30px;
+    background:none; /*picture*/
+}
+
+
+#pagercenter{
+    float:left;
+    height:460px;
+    background:none;
+    border:none;
+    padding:10px;
+    margin:0 0 0 16px;
+    width:505px;
+}
+
+#pagerright{
+    float:right;
+    height:460px;
+    background:none;
+    border:none;
+    padding:10px;
+    margin:0 auto;
+    width:161px;
+}
+
+#pagercenter_ins{
+    float:left;
+    height:440px;
+    background:none;
+    text-align:center;/*text centrirane*/
+    border:1px solid blue;
+    padding:2px;
+    margin:0;
+    width:245px;
+}
+
+
+
+
+#tl{
+    height:40px;
+    background:#B0B0B0;
+}
+
+
+/*
+#pagercenterright{
+    float:left;
+    height

@@ -1,0 +1,27 @@
+
+.roll_stats {
+    width:400px;
+
+}
+
+.roll_stats_ul ul {
+    
+    float:left;
+    padding:10px;
+    
+}
+
+
+.roll_list {
+    float:left;
+}
+
+.runlist {
+    width:200px;
+    height:200px;
+    overflow:auto;
+}
+
+.run {
+    float:left;
+}
