@@ -1,22 +1,52 @@
 
+
 $(document).ready(function(){
 
 //var nturl="https://rpcbackground.web.cern.ch/rpcbackground/Plots/GR2014/";
 var nturl="";
 
+
 $(".getrunlist").click(function(){
 	$.getJSON(nturl+"runlist.json", function(result){
 		var items = [];
 		$("ul").remove(".runlistul");
+
+		var coll_array =[];
+
+		$.each(result, function(key, val){			
+			var runobj = val;
+			runobj["number"] = 'run'+key;
+			coll_array.push(runobj);
+			//console.log(runobj);
+
+		});
+
+		var rlist = new RunlistCollection(coll_array);
+		rlist.forEach(function(model){
+			//console.log(model.get('number'));
+			//console.log(model.get('duration');
+		});
+		console.log(rlist);
+
 		$.each(result, function(key, val){
-			items.push( "<li class=\"runlistli\"><button  id='" + key + "'  class=\"runlistb\" >" +key+ "</button></li>" );
-			
-			console.log("run "+key);
+
+
+			var details = new RunBasicInfo({
+				number: ''+key,
+				Type: result[key]["Type"],
+				lumisections : result[key]["lumisections"],
+				duration: result[key]["duration"],
+				status: result[key]["status"]
+			});
+
+			items.push( "<li class=\"runlistli\"><button  id='" + details.get("number") + "'  class=\"runlistb\" >" +key+ "</button></li>" );
+			//console.log(details);
+			//console.log("run "+details.get("Type")+" "+details.get("duration")+ " " + details.get("status"));
 			
 		    });
 				
 		//items = items.slice(Math.max(items.length - 5, 1));
-		    
+		
 		$( "<ul/>", {
 			
 			"class": "runlistul",
@@ -30,28 +60,35 @@ $(".getrunlist").click(function(){
 $("div.runlist").click(function(e){
 	
 	var runn = e.target.id;
+
+	var runDetailsStripsColl = new RunDetailsStripsCollection();
+
+	runDetailsStripsColl.url = nturl+"/noisetool/data/run"+runn+"/output_strips.json";
+
+	runDetailsStripsColl.on('add', function (models, options){ console.log(models, options, 'add fired, fetch finished'); } );
+
+	runDetailsStripsColl.fetch();
+
+	console.log(runDetailsStripsColl, 'not ready'); // not ready
+
 	$.getJSON(nturl+"/noisetool/data/run"+runn+"/output_strips.json", function(result){
-		
-		var run_keys = [];   
+
 		$("ul").remove(".run_items_ul");
 
 		$(".run").removeData(".data");
-		$.each(result, function(key, val){
-			run_keys.push( "<li class=\"run_items_li\"><button  id='" + key + "'  class=\"run_items_b\" >" +key+ "</button></li>"  );
-			
-			// console.log("<li class=\"run_items_li\"><button  id='" + key + "'  class=\"run_items_b\" >" +key+ "</button></li>");
-			// console.log(key+" "+runn);
-		    });
-		
+
+		var run_keys = []; 
+		for (var model_key in runDetailsStripsColl.at(0).attributes){
+			console.log(model_key);
+			run_keys.push( "<li class=\"run_items_li\"><button  id='" + model_key + "'  class=\"run_items_b\" >" +model_key+ "</button></li>"  );
+		}
 		
 		$( "<ul/>", {
 			"class": "run_items_ul",
 			    html: run_keys.join( ""  )
 			    }).appendTo( ".run" );  
 		
-
 		$(".run").data(result);
-
 
 	    });	
 
@@ -59,12 +96,14 @@ $("div.runlist").click(function(e){
 
 $("div.run").click(function(e){
 	var key = e.target.id;
-	run_stats = $(".run").data(key);
+	var run_stats = $(".run").data(key);
+	//console.log(key);
+	//console.log(run_stats);
+	
 	//rolls_stats = run_stats.key;
 	var list_rolls = [];
-	//console.log(run_stats);
-	$("ul").remove(".roll_list_ul");
-	
+	$("ul").remove(".roll_list_ul");	
+
 	$.each(run_stats, function(k,v){
 		
 		list_rolls.push("<li class=\"roll_list_li\" ><button id='" + k + "'  class=\"roll_list_b\" >" +k+ "</button>  </li>");
@@ -123,6 +162,7 @@ $("div.roll_list").click(function(e){
 	
 
     });
+
 
 });
 
