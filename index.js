@@ -1,108 +1,84 @@
 
 
-$(document).ready(function(){
 
 //var nturl="https://rpcbackground.web.cern.ch/rpcbackground/Plots/GR2014/";
-var nturl="";
+var nturl="/noisetool";
+var runsCollection = new RunlistCollection();
+runsCollection.url = nturl+'/runlist.json';
+runsCollection.fetch();
 
+console.log(runsCollection);
+
+var runDetailsStripsColl = new RunDetailsStripsCollection();
+
+
+
+$(document).ready(function(){
 
 $(".getrunlist").click(function(){
-	$.getJSON(nturl+"runlist.json", function(result){
-		var items = [];
-		$("ul").remove(".runlistul");
 
-		var coll_array =[];
+	$("ul").remove(".runlistul");
+	var items = [];
+	runsCollection.forEach(function(model){
+			//console.log(model.attributes.number, model.get('number'), model.id); // working now
+			items.push("<li class=\"runlistli\"><button  id='" + model.id + "'  class=\"runlistb\" >" +model.id+ "</button></li>");
+	});
 
-		$.each(result, function(key, val){			
-			var runobj = val;
-			runobj["number"] = 'run'+key;
-			coll_array.push(runobj);
-			//console.log(runobj);
+	$( "<ul/>", {	
+		"class": "runlistul",
+	    html: items.join( ""  )
 
-		});
-
-		var rlist = new RunlistCollection(coll_array);
-		rlist.forEach(function(model){
-			//console.log(model.get('number'));
-			//console.log(model.get('duration');
-		});
-		console.log(rlist);
-
-		$.each(result, function(key, val){
-
-
-			var details = new RunBasicInfo({
-				number: ''+key,
-				Type: result[key]["Type"],
-				lumisections : result[key]["lumisections"],
-				duration: result[key]["duration"],
-				status: result[key]["status"]
-			});
-
-			items.push( "<li class=\"runlistli\"><button  id='" + details.get("number") + "'  class=\"runlistb\" >" +key+ "</button></li>" );
-			//console.log(details);
-			//console.log("run "+details.get("Type")+" "+details.get("duration")+ " " + details.get("status"));
-			
-		    });
-				
-		//items = items.slice(Math.max(items.length - 5, 1));
+    }).appendTo( ".runlist" );
 		
-		$( "<ul/>", {
-			
-			"class": "runlistul",
-			    html: items.join( ""  )
-			    }).appendTo( ".runlist" );
-		
-		
-	    });
-    });
+	
+});
 
 $("div.runlist").click(function(e){
 	
 	var runn = e.target.id;
 
-	var runDetailsStripsColl = new RunDetailsStripsCollection();
+	runDetailsStripsColl.url = nturl+"/data/run"+runn+"/output_strips.json";
 
-	runDetailsStripsColl.url = nturl+"/noisetool/data/run"+runn+"/output_strips.json";
-
-	runDetailsStripsColl.on('add', function (models, options){ console.log(models, options, 'add fired, fetch finished'); } );
+	//runDetailsStripsColl.on('add', function (models, options){ console.log(models, options, 'add fired, fetch finished'); } );
 
 	runDetailsStripsColl.fetch();
 
 	console.log(runDetailsStripsColl, 'not ready'); // not ready
 
-	$.getJSON(nturl+"/noisetool/data/run"+runn+"/output_strips.json", function(result){
+	var run_keys = []; 
 
-		$("ul").remove(".run_items_ul");
-
-		$(".run").removeData(".data");
-
-		var run_keys = []; 
+	runDetailsStripsColl.on('add', function (models, options){
 		for (var model_key in runDetailsStripsColl.at(0).attributes){
 			console.log(model_key);
 			run_keys.push( "<li class=\"run_items_li\"><button  id='" + model_key + "'  class=\"run_items_b\" >" +model_key+ "</button></li>"  );
 		}
-		
+		$(".run").removeData(".data");
+		$("ul").remove(".run_items_ul");
+
 		$( "<ul/>", {
 			"class": "run_items_ul",
-			    html: run_keys.join( ""  )
-			    }).appendTo( ".run" );  
-		
-		$(".run").data(result);
+	    	html: run_keys.join( ""  )
+    	}).appendTo( ".run" );
 
-	    });	
+    	console.log(runDetailsStripsColl.at(0));
+		$(".run").data(runDetailsStripsColl.at(0).attributes);
+
+	});
+
 
     });
 
 $("div.run").click(function(e){
-	var key = e.target.id;
-	var run_stats = $(".run").data(key);
-	//console.log(key);
-	//console.log(run_stats);
+	
+	var run_stats = $(".run").data(e.target.id);
+	
+	console.log(run_stats);
 	
 	//rolls_stats = run_stats.key;
 	var list_rolls = [];
-	$("ul").remove(".roll_list_ul");	
+	$("ul").remove(".roll_list_ul");
+
+
 
 	$.each(run_stats, function(k,v){
 		
@@ -116,18 +92,18 @@ $("div.run").click(function(e){
 		    html: list_rolls.join( ""  )
 		    }).appendTo( ".roll_list" );
 	
-	console.log(key);
+	console.log(e.target.id);
 	$(".roll_list").removeData(".data");
-	$(".roll_list").data("key",key);
+	$(".roll_list").data("key",e.target.id);
 	
     });
 
 
 $("div.roll_list").click(function(e){
 	var roll_name = e.target.id;
-	var ke = $(".roll_list").data("key");
-	console.log(ke+" "+roll_name);
-	run_stats_strips = $(".run").data(ke);
+	var key = $(".roll_list").data("key");
+	console.log(key+" "+roll_name);
+	run_stats_strips = $(".run").data(key);
 	rdata = run_stats_strips[roll_name];
 	console.log(roll_name+" "+rdata);
 	var obj_keys = [];
@@ -157,7 +133,7 @@ $("div.roll_list").click(function(e){
 	
 	$(  "<ul/>", {
                 "class": "roll_stats_ul",
-                    html: ke + " in " + roll_name + "<br><br>" + ul_s.join( ""  )
+                    html: key + " in " + roll_name + "<br><br>" + ul_s.join( ""  )
                     }).appendTo( ".roll_stats" );
 	
 

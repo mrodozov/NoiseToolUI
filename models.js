@@ -1,8 +1,7 @@
 
 var RunBasicInfo = Backbone.Model.extend ({
-	//idAttribute: 'number',
-
-	// idAttribute: "_id",
+	idAttribute: 'number',
+	
 	defaults:  {
 		number:'',
 		Type : '',
@@ -19,6 +18,24 @@ var RunBasicInfo = Backbone.Model.extend ({
 var RunlistCollection = Backbone.Collection.extend ({
 
 	model: RunBasicInfo,
+	parse: function(response){
+		objects_list = [];
+		//objects_list.push(response);
+		for (var k in response){
+			var obj = response[k];
+			obj["number"] = k;
+			objects_list.push(obj);
+		}
+		
+		return objects_list;
+
+	},
+
+	initialize: function (opts) {
+		this.on('set', function (model, [options]) {
+            console.log('set called', model, options);
+        });
+	},
 
 	modelId: function(attrs) {
 		return attrs.number;
